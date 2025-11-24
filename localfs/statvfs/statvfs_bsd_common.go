@@ -4,7 +4,7 @@
 package statvfs
 
 import (
-	"github.com/pkg/sftp/v2/encoding/ssh/filexfer/openssh"
+	"github.com/headblockhead/sftp/encoding/ssh/filexfer/openssh"
 )
 
 const (

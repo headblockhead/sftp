@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/pkg/sftp/v2"
-	sshfx "github.com/pkg/sftp/v2/encoding/ssh/filexfer"
+	"github.com/headblockhead/sftp"
+	sshfx "github.com/headblockhead/sftp/encoding/ssh/filexfer"
 )
 
 // File wraps an [os.File] to provide the additional operations necessary to implement [sftp.FileHandler].

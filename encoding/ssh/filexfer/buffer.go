@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"unsafe"
 
-	"github.com/pkg/sftp/v2/internal/sync"
+	"github.com/headblockhead/sftp/internal/sync"
 )
 
 // Various encoding errors.

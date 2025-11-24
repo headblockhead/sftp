@@ -11,9 +11,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/pkg/sftp/v2"
-	sshfx "github.com/pkg/sftp/v2/encoding/ssh/filexfer"
-	"github.com/pkg/sftp/v2/encoding/ssh/filexfer/openssh"
+	"github.com/headblockhead/sftp"
+	sshfx "github.com/headblockhead/sftp/encoding/ssh/filexfer"
+	"github.com/headblockhead/sftp/encoding/ssh/filexfer/openssh"
 )
 
 // ServerHandler implements the sftp.ServerHandler interface using an os.Root filesystem to serve securely from a specific directory.

@@ -6,8 +6,8 @@ package localfs
 import (
 	"context"
 
-	"github.com/pkg/sftp/v2/encoding/ssh/filexfer/openssh"
-	"github.com/pkg/sftp/v2/localfs/statvfs"
+	"github.com/headblockhead/sftp/encoding/ssh/filexfer/openssh"
+	"github.com/headblockhead/sftp/localfs/statvfs"
 )
 
 // StatVFS implements ssh.StatVFSFileHandler.

@@ -4,12 +4,12 @@ sftp
 The `sftp` package provides support for file system operations on remote ssh servers using the SFTP subsystem.
 It also implements an SFTP server for serving files from the local filesystem.
 
-![CI Status](https://github.com/pkg/sftp/workflows/CI/badge.svg?branch=master&event=push) [![Go Reference](https://pkg.go.dev/badge/github.com/pkg/sftp/v2.svg)](https://pkg.go.dev/github.com/pkg/sftp/v2)
+![CI Status](https://github.com/pkg/sftp/workflows/CI/badge.svg?branch=master&event=push) [![Go Reference](https://pkg.go.dev/badge/github.com/headblockhead/sftp.svg)](https://pkg.go.dev/github.com/headblockhead/sftp)
 
 usage and examples
 ------------------
 
-See [https://pkg.go.dev/github.com/pkg/sftp/v2](https://pkg.go.dev/github.com/pkg/sftp/v2) for examples and usage.
+See [https://pkg.go.dev/github.com/headblockhead/sftp](https://pkg.go.dev/github.com/headblockhead/sftp) for examples and usage.
 
 The basic operation of the client mirrors the facilities of the [os](http://pkg.go.dev/os) package.
 

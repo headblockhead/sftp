@@ -5,7 +5,7 @@ import (
 	"io/fs"
 	"time"
 
-	sshfx "github.com/pkg/sftp/v2/encoding/ssh/filexfer"
+	sshfx "github.com/headblockhead/sftp/encoding/ssh/filexfer"
 )
 
 // NameLookup defines an interface to lookup user names and group names in a portable manner.

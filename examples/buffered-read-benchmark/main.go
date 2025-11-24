@@ -15,7 +15,7 @@ import (
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/agent"
 
-	"github.com/pkg/sftp/v2"
+	"github.com/headblockhead/sftp"
 )
 
 // Various flags to control the benchmark.

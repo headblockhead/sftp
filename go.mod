@@ -1,4 +1,4 @@
-module github.com/pkg/sftp/v2
+module github.com/headblockhead/sftp
 
 go 1.25
 

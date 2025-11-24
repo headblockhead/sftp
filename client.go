@@ -18,10 +18,10 @@ import (
 	"time"
 	"unsafe"
 
-	sshfx "github.com/pkg/sftp/v2/encoding/ssh/filexfer"
-	"github.com/pkg/sftp/v2/encoding/ssh/filexfer/openssh"
-	"github.com/pkg/sftp/v2/internal/pragma"
-	"github.com/pkg/sftp/v2/internal/sync"
+	sshfx "github.com/headblockhead/sftp/encoding/ssh/filexfer"
+	"github.com/headblockhead/sftp/encoding/ssh/filexfer/openssh"
+	"github.com/headblockhead/sftp/internal/pragma"
+	"github.com/headblockhead/sftp/internal/sync"
 
 	"golang.org/x/crypto/ssh"
 )

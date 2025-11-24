@@ -25,8 +25,8 @@ import (
 
 	goCmp "github.com/google/go-cmp/cmp"
 
-	sftp "github.com/pkg/sftp/v2"
-	sshfx "github.com/pkg/sftp/v2/encoding/ssh/filexfer"
+	sftp "github.com/headblockhead/sftp"
+	sshfx "github.com/headblockhead/sftp/encoding/ssh/filexfer"
 )
 
 var (

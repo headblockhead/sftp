@@ -6,8 +6,8 @@ package statvfs
 import (
 	"runtime"
 
-	sshfx "github.com/pkg/sftp/v2/encoding/ssh/filexfer"
-	"github.com/pkg/sftp/v2/encoding/ssh/filexfer/openssh"
+	sshfx "github.com/headblockhead/sftp/encoding/ssh/filexfer"
+	"github.com/headblockhead/sftp/encoding/ssh/filexfer/openssh"
 )
 
 // StatVFS stubs the OpenSSH StatVFS with an sshfx.StatusOpUnsupported Status.

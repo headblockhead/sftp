@@ -3,7 +3,7 @@ package sshfx
 import (
 	"fmt"
 
-	"github.com/pkg/sftp/v2/internal/sync"
+	"github.com/headblockhead/sftp/internal/sync"
 )
 
 // PacketType defines the various SFTP packet types.

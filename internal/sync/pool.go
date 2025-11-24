@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/pkg/sftp/v2/internal/pragma"
+	"github.com/headblockhead/sftp/internal/pragma"
 )
 
 // SlicePool is a set of temporary slices that may be individually saved and retrieved.

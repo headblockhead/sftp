@@ -9,7 +9,7 @@ import (
 	"os"
 	"syscall"
 
-	sshfx "github.com/pkg/sftp/v2/encoding/ssh/filexfer"
+	sshfx "github.com/headblockhead/sftp/encoding/ssh/filexfer"
 )
 
 // translateErrno translates a syscall error number to a SFTP error code.

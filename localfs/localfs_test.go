@@ -1,7 +1,7 @@
 package localfs
 
 import (
-	sftp "github.com/pkg/sftp/v2"
+	sftp "github.com/headblockhead/sftp"
 )
 
 var handler = &ServerHandler{}

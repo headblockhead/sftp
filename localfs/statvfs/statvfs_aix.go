@@ -3,7 +3,7 @@ package statvfs
 import (
 	"syscall"
 
-	"github.com/pkg/sftp/v2/encoding/ssh/filexfer/openssh"
+	"github.com/headblockhead/sftp/encoding/ssh/filexfer/openssh"
 )
 
 // StatVFS converts the syscall.Statfs from AIX syscall to OpenSSH StatVFS.

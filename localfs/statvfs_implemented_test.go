@@ -4,7 +4,7 @@
 package localfs
 
 import (
-	"github.com/pkg/sftp/v2"
+	"github.com/headblockhead/sftp"
 )
 
 var _ sftp.StatVFSFileHandler = &File{}

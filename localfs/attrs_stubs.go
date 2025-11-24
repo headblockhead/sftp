@@ -6,7 +6,7 @@ package localfs
 import (
 	"io/fs"
 
-	sshfx "github.com/pkg/sftp/v2/encoding/ssh/filexfer"
+	sshfx "github.com/headblockhead/sftp/encoding/ssh/filexfer"
 )
 
 func fileStatFromInfoOs(fi fs.FileInfo, attrs *sshfx.Attributes) {

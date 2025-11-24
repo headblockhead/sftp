@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	sshfx "github.com/pkg/sftp/v2/encoding/ssh/filexfer"
+	sshfx "github.com/headblockhead/sftp/encoding/ssh/filexfer"
 )
 
 // UnimplementedServerHandler must be embedded to both ensure forward compatible implementations,
