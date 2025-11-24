@@ -16,12 +16,12 @@ import (
 	"github.com/pkg/sftp/v2/encoding/ssh/filexfer/openssh"
 )
 
-// ServerHandler implements the sftp.ServerHandler interface using the local filesystem as the filesystem.
-// NOTE: This is not normally a safe thing to expose.
+// ServerHandler implements the sftp.ServerHandler interface using an os.Root filesystem to serve securely from a specific directory.
 type ServerHandler struct {
 	sftp.UnimplementedServerHandler
 
 	ReadOnly bool
+	Root     *os.Root
 	WorkDir  string
 
 	handles atomic.Uint64
@@ -40,7 +40,7 @@ func (h *ServerHandler) toLocalPath(p string) (string, error) {
 		return "", sshfx.StatusNoSuchFile
 	}
 
-	return toLocalPath(p)
+	return p, nil
 }
 
 // Mkdir implements [sftp.ServerHandler].
@@ -55,7 +55,7 @@ func (h *ServerHandler) Mkdir(_ context.Context, req *sshfx.MkdirPacket) error {
 		perms = req.Attrs.GetPermissions().Perm()
 	}
 
-	return os.Mkdir(lpath, fs.FileMode(perms))
+	return h.Root.Mkdir(lpath, fs.FileMode(perms))
 }
 
 // Remove implements [sftp.ServerHandler].
@@ -65,7 +65,7 @@ func (h *ServerHandler) Remove(_ context.Context, req *sshfx.RemovePacket) error
 		return err
 	}
 
-	fi, err := os.Stat(lpath)
+	fi, err := h.Root.Stat(lpath)
 	if err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func (h *ServerHandler) Remove(_ context.Context, req *sshfx.RemovePacket) error
 		}
 	}
 
-	return os.Remove(lpath)
+	return h.Root.Remove(lpath)
 }
 
 // Rename implements [sftp.ServerHandler].
@@ -93,7 +93,7 @@ func (h *ServerHandler) Rename(_ context.Context, req *sshfx.RenamePacket) error
 		return err
 	}
 
-	if _, err := os.Stat(to); !errors.Is(err, fs.ErrNotExist) {
+	if _, err := h.Root.Stat(to); !errors.Is(err, fs.ErrNotExist) {
 		if err == nil {
 			return fs.ErrExist
 		}
@@ -101,7 +101,7 @@ func (h *ServerHandler) Rename(_ context.Context, req *sshfx.RenamePacket) error
 		return err
 	}
 
-	return os.Rename(from, to)
+	return h.Root.Rename(from, to)
 }
 
 // POSIXRename implements [sftp.POSIXRenameServerHandler].
@@ -116,7 +116,7 @@ func (h *ServerHandler) POSIXRename(_ context.Context, req *openssh.POSIXRenameE
 		return err
 	}
 
-	return posixRename(from, to)
+	return h.Root.Rename(from, to)
 }
 
 // Rmdir implements [sftp.ServerHandler].
@@ -126,7 +126,7 @@ func (h *ServerHandler) Rmdir(_ context.Context, req *sshfx.RmdirPacket) error {
 		return err
 	}
 
-	fi, err := os.Stat(lpath)
+	fi, err := h.Root.Stat(lpath)
 	if err != nil {
 		return err
 	}
@@ -139,7 +139,7 @@ func (h *ServerHandler) Rmdir(_ context.Context, req *sshfx.RmdirPacket) error {
 		}
 	}
 
-	return os.Remove(lpath)
+	return h.Root.Remove(lpath)
 }
 
 // SetStat implements [sftp.ServerHandler].
@@ -150,29 +150,30 @@ func (h *ServerHandler) SetStat(_ context.Context, req *sshfx.SetStatPacket) err
 	}
 
 	if req.Attrs.HasSize() {
-		sz := req.Attrs.GetSize()
-		if err := os.Truncate(lpath, int64(sz)); err != nil {
-			return err
-		}
+		// FIXME: Truncate is not supported by os.Root
+		/*sz := req.Attrs.GetSize()*/
+		/*   if err := h.Root.Truncate(lpath, int64(sz)); err != nil {*/
+		/*return err*/
+		/*}*/
 	}
 
 	if req.Attrs.HasUserGroup() {
 		uid, gid := req.Attrs.GetUserGroup()
-		if err := os.Chown(lpath, int(uid), int(gid)); err != nil {
+		if err := h.Root.Chown(lpath, int(uid), int(gid)); err != nil {
 			return err
 		}
 	}
 
 	if req.Attrs.HasPermissions() {
 		perms := req.Attrs.GetPermissions()
-		if err := os.Chmod(lpath, fs.FileMode(perms.Perm())); err != nil {
+		if err := h.Root.Chmod(lpath, fs.FileMode(perms.Perm())); err != nil {
 			return err
 		}
 	}
 
 	if req.Attrs.HasACModTime() {
 		atime, mtime := req.Attrs.GetACModTime()
-		if err := os.Chtimes(lpath, time.Unix(int64(atime), 0), time.Unix(int64(mtime), 0)); err != nil {
+		if err := h.Root.Chtimes(lpath, time.Unix(int64(atime), 0), time.Unix(int64(mtime), 0)); err != nil {
 			return err
 		}
 	}
@@ -192,7 +193,7 @@ func (h *ServerHandler) Symlink(_ context.Context, req *sshfx.SymlinkPacket) err
 		return err
 	}
 
-	return os.Symlink(target, link)
+	return h.Root.Symlink(target, link)
 }
 
 func fileInfoToAttrs(fi fs.FileInfo) *sshfx.Attributes {
@@ -215,7 +216,7 @@ func (h *ServerHandler) LStat(_ context.Context, req *sshfx.LStatPacket) (*sshfx
 		return nil, err
 	}
 
-	fi, err := os.Lstat(lpath)
+	fi, err := h.Root.Lstat(lpath)
 	if err != nil {
 		return nil, err
 	}
@@ -230,7 +231,7 @@ func (h *ServerHandler) Stat(_ context.Context, req *sshfx.StatPacket) (*sshfx.A
 		return nil, err
 	}
 
-	fi, err := os.Stat(lpath)
+	fi, err := h.Root.Stat(lpath)
 	if err != nil {
 		return nil, err
 	}
@@ -245,7 +246,7 @@ func (h *ServerHandler) ReadLink(_ context.Context, req *sshfx.ReadLinkPacket) (
 		return "", err
 	}
 
-	return os.Readlink(lpath)
+	return h.Root.Readlink(lpath)
 }
 
 // RealPath implements [sftp.ServerHandler].
@@ -255,13 +256,23 @@ func (h *ServerHandler) RealPath(_ context.Context, req *sshfx.RealPathPacket) (
 		return "", err
 	}
 
-	abs, err := filepath.Abs(lpath)
-	if err != nil {
-		return "", err
-	}
+	// TODO: check this
 
-	return path.Join("/", filepath.ToSlash(abs)), nil
+	return path.Join("/", filepath.ToSlash(lpath)), nil
 }
+
+/*func (h *ServerHandler) openfile(path string, flag int, mod fs.FileMode) (*File, error) {*/
+/*f, err := h.Root.OpenFile(path, flag, mod)*/
+/*if err != nil {*/
+/*return nil, err*/
+/*}*/
+
+/*return &File{*/
+/*filename: path,*/
+/*handle:   fmt.Sprint(h.fileHandlerCount.Add(1)),*/
+/*File:     f,*/
+/*}, nil*/
+/*}*/
 
 // Open implements [sftp.ServerHandler].
 func (h *ServerHandler) Open(_ context.Context, req *sshfx.OpenPacket) (sftp.FileHandler, error) {
