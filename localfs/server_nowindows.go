@@ -6,11 +6,10 @@ package localfs
 import (
 	"fmt"
 	"io/fs"
-	"os"
 )
 
 func (h *ServerHandler) openfile(path string, flag int, mod fs.FileMode) (*File, error) {
-	f, err := os.OpenFile(path, flag, mod)
+	f, err := h.Root.OpenFile(path, flag, mod)
 	if err != nil {
 		return nil, err
 	}

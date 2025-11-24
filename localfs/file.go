@@ -7,7 +7,6 @@ import (
 	"os"
 	"slices"
 	"sync"
-	"time"
 
 	"github.com/headblockhead/sftp"
 	sshfx "github.com/headblockhead/sftp/encoding/ssh/filexfer"
@@ -154,8 +153,12 @@ func (f *File) SetStat(attrs *sshfx.Attributes) (err error) {
 	}
 
 	if attrs.HasACModTime() {
-		atime, mtime := attrs.GetACModTime()
-		err = cmp.Or(os.Chtimes(f.filename, time.Unix(int64(atime), 0), time.Unix(int64(mtime), 0)), err)
+		return &sshfx.StatusPacket{
+			StatusCode:   sshfx.StatusOpUnsupported,
+			ErrorMessage: "unsupported fsetstat: atime/mtime",
+		}
+		//atime, mtime := attrs.GetACModTime()
+		//err = cmp.Or(os.Chtimes(f.filename, time.Unix(int64(atime), 0), time.Unix(int64(mtime), 0)), err)
 	}
 
 	if attrs.HasUserGroup() {

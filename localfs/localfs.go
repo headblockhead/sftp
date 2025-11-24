@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 	"sync/atomic"
 	"time"
 
@@ -39,6 +40,8 @@ func (h *ServerHandler) toLocalPath(p string) (string, error) {
 	if p == "" {
 		return "", sshfx.StatusNoSuchFile
 	}
+
+	p = strings.TrimPrefix(p, "/")
 
 	return p, nil
 }
@@ -151,6 +154,7 @@ func (h *ServerHandler) SetStat(_ context.Context, req *sshfx.SetStatPacket) err
 
 	if req.Attrs.HasSize() {
 		// FIXME: Truncate is not supported by os.Root
+		return sshfx.StatusOpUnsupported
 		/*sz := req.Attrs.GetSize()*/
 		/*   if err := h.Root.Truncate(lpath, int64(sz)); err != nil {*/
 		/*return err*/
@@ -256,23 +260,8 @@ func (h *ServerHandler) RealPath(_ context.Context, req *sshfx.RealPathPacket) (
 		return "", err
 	}
 
-	// TODO: check this
-
 	return path.Join("/", filepath.ToSlash(lpath)), nil
 }
-
-/*func (h *ServerHandler) openfile(path string, flag int, mod fs.FileMode) (*File, error) {*/
-/*f, err := h.Root.OpenFile(path, flag, mod)*/
-/*if err != nil {*/
-/*return nil, err*/
-/*}*/
-
-/*return &File{*/
-/*filename: path,*/
-/*handle:   fmt.Sprint(h.fileHandlerCount.Add(1)),*/
-/*File:     f,*/
-/*}, nil*/
-/*}*/
 
 // Open implements [sftp.ServerHandler].
 func (h *ServerHandler) Open(_ context.Context, req *sshfx.OpenPacket) (sftp.FileHandler, error) {
