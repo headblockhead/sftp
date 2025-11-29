@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	sshfx "github.com/headblockhead/sftpinternal/encoding/ssh/filexfer"
+	sshfx "github.com/pkg/sftpinternal/encoding/ssh/filexfer"
 )
 
 var _ sshfx.PacketMarshaller = &StatVFSExtendedPacket{}

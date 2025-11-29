@@ -1,7 +1,7 @@
 package openssh
 
 import (
-	sshfx "github.com/headblockhead/sftpinternal/encoding/ssh/filexfer"
+	sshfx "github.com/pkg/sftpinternal/encoding/ssh/filexfer"
 )
 
 const extensionPOSIXRename = "posix-rename@openssh.com"
