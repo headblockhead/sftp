@@ -155,7 +155,7 @@ func ExampleFile_ReadFrom_bufio() {
 	// workaround is to wrap your writer in a struct that only implements
 	// io.Writer.
 	//
-	// For background see github.com/pkg/sftp/issues/125
+	// For background see github.com/headblockhead/sftpissues/125
 
 	var data_source io.Reader
 	var f *sftp.File
